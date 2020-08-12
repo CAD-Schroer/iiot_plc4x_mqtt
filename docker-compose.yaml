@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+
+  connector:
+    image: patrickse/connector:0.0.1-SNAPSHOT
+    environment:
+      MQTT_SERVERURI: "tcp://broker:1883"
+      FORWARD_SAMPLERATE: "2000"
+      PLC_CONNECTIONSTRING: "opcua:tcp://simulator:12686/"
+      FORWARD_NODEID: "ns=2;s=items-lrBeltDriveSpeed"
+      FORWARD_NODENAME: "lrBeltDriveSpeed"
+    depends_on:
+      - simulator
+      - broker
+    restart: on-failure
+
+  simulator:
+    image: patrickse/simulator:0.0.1-SNAPSHOT
+
+  broker:
+    image: eclipse-mosquitto

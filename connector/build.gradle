@@ -1,0 +1,58 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.1.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'com.csg.iot.webcasts.plc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    // Eclipse Paho
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2'
+
+
+    // Apache PLC4X
+    implementation 'org.apache.plc4x:plc4j-api:0.7.0'
+    implementation 'org.apache.plc4x:plc4j-driver-opcua:0.7.0'
+
+
+    // Eclipse Milo overrides Apache PLC4X integrated Milo release
+    implementation 'org.eclipse.milo:sdk-client:0.3.7'
+    implementation 'org.eclipse.milo:stack-client:0.3.7'
+    implementation 'org.eclipse.milo:stack-core:0.3.7'
+
+
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks {
+    bootBuildImage {
+        imageName = "patrickse/connector:${version}"
+    }
+}
